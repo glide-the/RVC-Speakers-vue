@@ -207,7 +207,7 @@
 
 <script>
 import axios from "axios";
-import { runnerResult, runnerSubmit } from '@/api'
+import { runnerResult, runnerStatus, runnerSubmit } from '@/api'
 
 function smoothApproach(currentValue, targetValue, increment) {
   // 计算逼近的方向（增加还是减少）
@@ -296,7 +296,7 @@ export default {
     async pollTaskStatus(taskId) {
       const intervalId = setInterval(async () => {
         this.progress = smoothApproach(this.progress, 100, 20);
-        const response = await runnerSubmit(this.formData)
+        const response = await runnerStatus({ task_id: taskId })
         if (response.data.code === 200 && response.data.data.finished === true) {
           clearInterval(intervalId);
           this.progress = 100
